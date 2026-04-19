@@ -18,7 +18,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
     $user = $result->fetch_assoc();
     $_SESSION['kullanici_id'] = $user['kullanici_id'];
     $_SESSION['kullanici_adi'] = $user['kullanici_adi'];
-    $_SESSION['yetki'] = $user['yetki']; // Veritabanından gelen yetki (0 veya 1)
+    $_SESSION['yetki'] = $user['yetki']; // yetki değer 1 de iken yetkili kullanıcı tanımlıyor
 
     header("Location: panel.php");
     exit();
