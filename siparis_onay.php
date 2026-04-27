@@ -27,7 +27,9 @@ try {
         $sorgu->bind_param("i", $id);
         $sorgu->execute();
         $fiyat = $sorgu->get_result()->fetch_assoc()['fiyat'];
-        $toplam_tutar += ($fiyat * $adet);
+        if ($res) {
+            $toplam_tutar += ($res['fiyat'] * $adet);
+        }
     }
 
     // 2. Ana Sipariş Kaydını Atalım
@@ -43,6 +45,13 @@ try {
     $sql_detay = "INSERT INTO siparis_detay (siparis_id, urun_id, adet, birim_fiyat) VALUES (?, ?, ?, ?)";
     $stmt_detay = $conn->prepare($sql_detay);
 
+    $sql_stok = "UPDATE stok SET miktar = miktar - ? WHERE urun_id = ?";
+    $stmt_stok = $conn->prepare($sql_stok);
+
+    if (!$stmt_stok) {
+        throw new Exception("Stok sorgusu hazırlanamadı: " . $conn->error);
+    }
+
     foreach ($_SESSION['sepet'] as $id => $adet) {
         // kullanıcı sepet sayfasındayken veritabanından ürünün fiyatını değiştirmek zorunda kalırsak(zam gelirse vb.) ürünü güncel fiyattan satmamızı sağlar
         $sorgu_fiyat = $conn->prepare("SELECT fiyat FROM URUNLER WHERE urun_id = ?");
@@ -53,6 +62,9 @@ try {
         // Detay tablosuna ekle
         $stmt_detay->bind_param("iiid", $yeni_siparis_id, $id, $adet, $birim_fiyat);
         $stmt_detay->execute();
+
+        $stmt_stok->bind_param("ii", $adet, $id);     //stoktan düşme fonksiyonu
+        $stmt_stok->execute();
     }
 
     // Her şey yolundaysa veritabanına onayı ver!

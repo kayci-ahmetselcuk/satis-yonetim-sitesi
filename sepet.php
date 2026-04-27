@@ -12,7 +12,7 @@ $toplam_fiyat = 0;
     <title>Sepetim</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f4f9; padding: 40px; }
-        .sepet-kutu { background: white; max-width: 900px; margin: auto; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .sepet-kutu { background: white; max-width: 900px; margin: auto; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); padding-top: 100px !important; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th { background: #3498db; color: white; padding: 12px; text-align: left; }
         td { padding: 12px; border-bottom: 1px solid #eee; }
@@ -86,7 +86,7 @@ $toplam_fiyat = 0;
     </style>
 </head>
 <body>
-
+<?php include 'navbar.php'; ?>
 <div class="sepet-kutu">
     <h2>🛒 Alışveriş Sepetim</h2>
 

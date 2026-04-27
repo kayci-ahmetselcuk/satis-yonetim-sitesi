@@ -1,5 +1,7 @@
 <?php
 session_start();
+include 'baglanti.php';
+
 if (!isset($_SESSION['kullanici_id'])) {
     header("Location: login.php");
     exit();
@@ -10,25 +12,25 @@ if (!isset($_SESSION['kullanici_id'])) {
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Kontrol Paneli | Teknoloji Mağazası</title>
+    <title>Kontrol Paneli | Bahaddin Gang</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; background: #f4f4f4; padding: 20px; }
-        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 800px; margin: auto; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; background: linear-gradient(135deg, #d57234 0%, #764ba2 100%); padding: 20px; padding-top: 100px !important;}
+        .container { background: #e7d2c1; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 800px; margin: auto; }
         h1 { color: #333; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
         .menu-section { margin-top: 20px; }
         .menu-section h3 { color: #2c3e50; }
         ul { list-style: none; padding: 0; }
         li { margin-bottom: 10px; }
-        a { text-decoration: none; color: #3498db; font-weight: bold; }
+        a { text-decoration: none; color: #364046; font-weight: bold; }
         a:hover { color: #2980b9; }
         .logout { color: #e74c3c !important; margin-top: 20px; display: inline-block; }
     </style>
 </head>
 <body>
-
+<?php include 'navbar.php'; ?>
 <div class="container">
-    <h1>Laptop & Donanım Yönetim Paneli</h1>
-    <p>Hoş geldin, <strong><?php echo $_SESSION['kullanici_adi']; ?></strong>!</p>
+    <h1>Hesap Yönetimi</h1> 
+    <p>Hoş geldin, <strong><?php echo $_SESSION['ad_soyad']; ?></strong>!</p>
 
     <div class="menu-section">
         <h3>Müşteri İşlemleri</h3>
@@ -43,7 +45,7 @@ if (!isset($_SESSION['kullanici_id'])) {
     // SADECE YÖNETİCİLERİN (Yetki 1) göreceği alan
     if ($_SESSION['yetki'] == 1) { 
     ?>
-        <div class="menu-section" style="background: #fff9f0; padding: 15px; border: 1px solid #ffeaa7; border-radius: 5px;">
+        <div class="menu-section" style="background: #cbb6a5; padding: 15px; border: 1px solid #2f2e2d; border-radius: 5px;">
             <h3>🛠️ Yönetici (Admin) Menüsü</h3>
             <ul>
                 <li><a href="urun_ekle.php">➕ Yeni Ürün/Laptop Ekle</a></li>
@@ -58,7 +60,7 @@ if (!isset($_SESSION['kullanici_id'])) {
     ?>
 
     <hr>
-    <a href="logout.php" class="logout">🚪 Güvenli Çıkış Yap</a>
+    <a href="logout.php" class="logout">🚪Çıkış Yap</a>
 </div>
 
 </body>

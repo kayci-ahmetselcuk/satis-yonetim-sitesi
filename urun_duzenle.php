@@ -62,30 +62,160 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Ürün Düzenle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürün Düzenle | Bahaddin Gang</title>
+    <style>
+        /* Genel Sifirlama ve Arka Plan */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        
+        body { 
+            background: linear-gradient(135deg, #d57234 0%, #764ba2 100%); 
+            background-attachment: fixed;
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            padding: 20px;
+            /* NAVBAR ÇAKIŞMASINI ÖNLEYEN KRİTİK AYAR */
+            padding-top: 120px !important; 
+        }
+
+        /* Düzenleme Kartı */
+        .edit-card {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .edit-card h2 { color: #333; font-size: 24px; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; text-align: center; }
+        .edit-card h3 { color: #764ba2; font-size: 18px; margin: 25px 0 15px 0; display: flex; align-items: center; gap: 10px; }
+
+        /* Form Elemanları */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; font-size: 14px; }
+        
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select { 
+            width: 100%; 
+            padding: 12px 15px; 
+            border: 2px solid #eee; 
+            border-radius: 8px; 
+            outline: none; 
+            transition: 0.3s; 
+            font-size: 15px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus { 
+            border-color: #764ba2; 
+            box-shadow: 0 0 8px rgba(118, 75, 162, 0.1); 
+        }
+
+        /* Butonlar */
+        .btn-container { display: flex; gap: 10px; margin-top: 25px; }
+
+        .btn-save {
+            flex: 2;
+            padding: 13px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-save:hover { background: #219150; transform: translateY(-2px); }
+
+        .btn-cancel {
+            flex: 1;
+            padding: 13px;
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-cancel:hover { background: #c0392b; }
+
+        .badge-id { background: #eee; padding: 4px 10px; border-radius: 5px; font-size: 12px; color: #666; }
+    </style>
 </head>
-<body>
-    <h2>Ürün Düzenle (ID: <?= $urun_id ?>)</h2>
-    <form method="post">
-        Ürün Adı: <input type="text" name="urun_adi" value="<?= $urun['urun_adi'] ?>" required><br><br>
-        Fiyat: <input type="number" step="0.01" name="fiyat" value="<?= $urun['fiyat'] ?>" required><br><br>
-        Marka ID: <input type="number" name="marka_id" value="<?= $urun['marka_id'] ?>" required><br><br>
-        Kategori ID: <input type="number" name="kategori_id" value="<?= $urun['kategori_id'] ?>" required><br><br>
+<body> 
+    <?php include 'navbar.php'; ?>
 
-        <?php if (!empty($urun['islemci'])): ?>
-            <h3>Laptop Detayları</h3>
-            İşlemci: <input type="text" name="islemci" value="<?= $urun['islemci'] ?>"><br>
-            RAM (GB): <input type="number" name="ram_gb" value="<?= $urun['ram_gb'] ?>"><br>
-            Ekran Kartı: <input type="text" name="ekran_karti" value="<?= $urun['ekran_karti'] ?>"><br>
-            Depolama: <input type="number" name="depolama" value="<?= $urun['depolama'] ?>"><br>
-        <?php elseif (!empty($urun['parca_tipi'])): ?>
-            <h3>Donanım Detayları</h3>
-            Parça Tipi: <input type="text" name="parca_tipi" value="<?= $urun['parca_tipi'] ?>"><br>
-            Teknik Detay:<br>
-            <textarea name="teknik_detay"><?= $urun['teknik_detay'] ?></textarea><br>
-        <?php endif; ?>
+    <div class="edit-card">
+        <h2>📦 Ürün Düzenle <span class="badge-id">ID: <?= $urun_id ?></span></h2>
+        
+        <form method="post">
+            <div class="form-group">
+                <label>Ürün Adı</label>
+                <input type="text" name="urun_adi" value="<?= htmlspecialchars($urun['urun_adi']) ?>" required>
+            </div>
 
-        <br><button type="submit">Değişiklikleri Kaydet</button>
-    </form>
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Fiyat (TL)</label>
+                    <input type="number" step="0.01" name="fiyat" value="<?= $urun['fiyat'] ?>" required>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Marka ID</label>
+                    <input type="number" name="marka_id" value="<?= $urun['marka_id'] ?>" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Kategori ID</label>
+                <input type="number" name="kategori_id" value="<?= $urun['kategori_id'] ?>" required>
+            </div>
+
+            <?php if (!empty($urun['islemci'])): ?>
+                <h3>💻 Laptop Teknik Özellikleri</h3>
+                <div class="form-group">
+                    <label>İşlemci Modeli</label>
+                    <input type="text" name="islemci" value="<?= htmlspecialchars($urun['islemci']) ?>">
+                </div>
+                <div style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>RAM (GB)</label>
+                        <input type="number" name="ram_gb" value="<?= $urun['ram_gb'] ?>">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Depolama (GB)</label>
+                        <input type="number" name="depolama" value="<?= $urun['depolama'] ?>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Ekran Kartı</label>
+                    <input type="text" name="ekran_karti" value="<?= htmlspecialchars($urun['ekran_karti']) ?>">
+                </div>
+
+            <?php elseif (!empty($urun['parca_tipi'])): ?>
+                <h3>🔧 Donanım Parça Bilgileri</h3>
+                <div class="form-group">
+                    <label>Parça Tipi</label>
+                    <input type="text" name="parca_tipi" value="<?= htmlspecialchars($urun['parca_tipi']) ?>">
+                </div>
+                <div class="form-group">
+                    <label>Teknik Detaylar</label>
+                    <textarea name="teknik_detay" rows="4"><?= htmlspecialchars($urun['teknik_detay']) ?></textarea>
+                </div>
+            <?php endif; ?>
+
+            <div class="btn-container">
+                <button type="submit" class="btn-save">💾 Değişiklikleri Kaydet</button>
+                <a href="urun_listele.php" class="btn-cancel">İptal</a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
