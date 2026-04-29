@@ -26,11 +26,11 @@ try {
         $sorgu = $conn->prepare("SELECT fiyat FROM URUNLER WHERE urun_id = ?");
         $sorgu->bind_param("i", $id);
         $sorgu->execute();
-        $fiyat = $sorgu->get_result()->fetch_assoc()['fiyat'];
-        if ($res) {
-            $toplam_tutar += ($res['fiyat'] * $adet);
-        }
-    }
+        $result = $sorgu->get_result()->fetch_assoc();
+         if ($result) {
+          $toplam_tutar += ($result['fiyat'] * $adet);
+         }
+}
 
     // 2. Ana Sipariş Kaydını Atalım
     $sql_ana = "INSERT INTO siparis (musteri_id, siparis_tarihi, toplam_tutar) VALUES (?, NOW(), ?)";
