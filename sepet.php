@@ -10,6 +10,7 @@ $toplam_fiyat = 0;
 <head>
     <meta charset="UTF-8">
     <title>Sepetim</title>
+    <div id="mesaj"></div>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f4f9; padding: 40px; }
         .sepet-kutu { background: white; max-width: 900px; margin: auto; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); padding-top: 100px !important; }
@@ -152,6 +153,14 @@ $toplam_fiyat = 0;
         </div>
     <?php endif; ?>
 </div>
-
+    <script>
+    fetch('sepet_kontrol.php')
+  .then(response => response.json())
+  .then(data => {
+    if(data.sepetBosMu) {
+      document.getElementById('mesaj').innerText = "Sepetiniz boş!";
+    }
+  });
+</script>
 </body>
 </html>
